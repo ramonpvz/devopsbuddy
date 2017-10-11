@@ -20,6 +20,9 @@ import com.devopsbuddy.backend.persistence.domain.backend.UserRole;
 import com.devopsbuddy.backend.persistence.repositories.PlanRepository;
 import com.devopsbuddy.backend.persistence.repositories.RoleRepository;
 import com.devopsbuddy.backend.persistence.repositories.UserRepository;
+import com.devopsbuddy.enums.PlanEnum;
+import com.devopsbuddy.enums.RolesEnum;
+import com.devopsbuddy.utils.UsersUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT) //@SpringApplicationConfiguration (deprecated)
@@ -35,7 +38,6 @@ public class RepositoriesIntegrationTest {
 	private UserRepository userRepository;
 	
 	private final int BASIC_PLAN_ID = 1;
-	private final int BASIC_ROLE_ID = 1;
 
 	@Before
 	public void init() {
@@ -46,7 +48,7 @@ public class RepositoriesIntegrationTest {
 	
 	@Test
 	public void testCreateNewPlan() throws Exception {
-		Plan basicPlan = createBasicPlan();
+		Plan basicPlan = createPlan(PlanEnum.BASIC);
 		planRepository.save(basicPlan);
 		Plan retrievedPlan = planRepository.findOne(BASIC_PLAN_ID);
 		assertTrue("Retrieved plan is null", retrievedPlan != null);
@@ -54,34 +56,32 @@ public class RepositoriesIntegrationTest {
 	
 	@Test
 	public void testCreateNewRole() throws Exception {
-		Role userRole = createBasicRole();
+		Role userRole = createRole(RolesEnum.BASIC);
 		roleRepository.save(userRole);
-		Role retrievedRole = roleRepository.findOne(BASIC_ROLE_ID);
+		Role retrievedRole = roleRepository.findOne(RolesEnum.BASIC.getId());
 		assertTrue("Retrieved role is null", retrievedRole != null);
 	}
-	
+
 	@Test
 	public void createNewUser() throws Exception {
-		
-		Plan basicPlan = createBasicPlan();
+
+		Plan basicPlan = createPlan(PlanEnum.BASIC);
 		planRepository.save(basicPlan);
-		
-		User basicUser = createBasicUser();
+
+		User basicUser = UsersUtils.createBasicUser();
 		basicUser.setPlan(basicPlan);
-		
-		Role basicRole = createBasicRole();
+
+		Role basicRole = createRole(RolesEnum.BASIC);
 		Set<UserRole> userRoles = new HashSet<>();
-		UserRole userRole = new UserRole();
-		userRole.setUser(basicUser);
-		userRole.setRole(basicRole);
+		UserRole userRole = new UserRole(basicUser, basicRole);
 		userRoles.add(userRole);
-		
+
 		basicUser.getUserRoles().addAll(userRoles);
-		
+
 		for (UserRole ur: userRoles) {
 			roleRepository.save(ur.getRole());
 		}
-		
+
 		basicUser = userRepository.save(basicUser);
 		User newlyCreatedUser = userRepository.findOne(basicUser.getId());
 		
@@ -100,33 +100,12 @@ public class RepositoriesIntegrationTest {
 
 	//--------------------------> Private methods
 
-	private Plan createBasicPlan() {
-		Plan plan = new Plan();
-		plan.setId(BASIC_PLAN_ID);
-		plan.setName("Basic");
-		return plan;
+	private Plan createPlan(PlanEnum planEnum) {
+		return new Plan(planEnum);
 	}
 
-	private Role createBasicRole() {
-		Role role = new Role();
-		role.setId(BASIC_ROLE_ID);
-		role.setName("ROLE_USER");
-		return role;
-	}
-
-	private User createBasicUser() {
-		User user = new User();
-		user.setUsername("basicUser");
-		user.setPassword("secret");
-		user.setEmail("me@example.com");
-		user.setFirstName("firstName");
-		user.setLastName("lastName");
-		user.setPhoneNumber("123456789");
-		user.setCountry("GB");
-		user.setEnabled(true);
-		user.setDescription("A basic user");
-		user.setProfileImageUrl("https://blabla.images.com/basicuser");
-		return user;
+	private Role createRole(RolesEnum rolesEnum) {
+		return new Role(rolesEnum);
 	}
 
 }
