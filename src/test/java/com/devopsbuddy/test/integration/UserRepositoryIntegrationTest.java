@@ -22,7 +22,7 @@ import com.devopsbuddy.enums.RolesEnum;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT) //@SpringApplicationConfiguration (deprecated)
-public class UserIntegrationTest extends AbstractIntegrationTest {
+public class UserRepositoryIntegrationTest extends AbstractIntegrationTest {
 	
 	@Rule public TestName testName = new TestName();
 
@@ -81,6 +81,19 @@ public class UserIntegrationTest extends AbstractIntegrationTest {
 
 		User basicUser = createUser(username, email);
 		userRepository.delete(basicUser.getId());
+
+	}
+
+	@Test
+	public void testGetUserByEmail() throws Exception {
+
+		User user = createUser(testName);
+
+		User newlyFoundUser = userRepository.findByEmail(user.getEmail());
+		
+		assertTrue("Newly found user does not exist", newlyFoundUser != null);
+
+		assertTrue("Newly found user is invalid" , newlyFoundUser.getId() > 0);
 
 	}
 
