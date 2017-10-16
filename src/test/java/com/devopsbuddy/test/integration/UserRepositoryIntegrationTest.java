@@ -3,6 +3,7 @@ package com.devopsbuddy.test.integration;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Set;
+import java.util.UUID;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -94,6 +95,23 @@ public class UserRepositoryIntegrationTest extends AbstractIntegrationTest {
 		assertTrue("Newly found user does not exist", newlyFoundUser != null);
 
 		assertTrue("Newly found user is invalid" , newlyFoundUser.getId() > 0);
+
+	}
+	
+	@Test
+	public void testUpdateUserPassword() throws Exception {
+
+		User user = createUser(testName);
+		assertTrue("User is null", user != null);
+		assertTrue("User id is invalid", user.getId() > 0);
+		
+		String newPassword = UUID.randomUUID().toString();
+		
+		userRepository.updateUserPassword(user.getId(), newPassword);
+		
+		user = userRepository.findOne(user.getId());
+
+		assertTrue("Password is incorrect", newPassword.equals(user.getPassword()));
 
 	}
 
