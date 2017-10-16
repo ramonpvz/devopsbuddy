@@ -1,5 +1,7 @@
 package com.devopsbuddy.web.controllers;
 
+import java.util.Locale;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -34,6 +36,8 @@ public class ForgotMyPasswordController {
 	public static final String CHANGE_PASSWORD_PATH = "/changeuserpassword";
 
 	public static final String EMAIL_MESSAGE_TEXT_PROPERTY_NAME = "forgotmypassword.email.text";
+	
+	public static final String CHANGE_PASSWORD_VIEW_NAME = "forgotmypassword/changePassword";
 	
 	@Autowired
 	private I18NService i18NService;
@@ -85,6 +89,14 @@ public class ForgotMyPasswordController {
 
 		return EMAIL_ADDRESS_VIEW_NAME;
 
+	}
+	
+	@RequestMapping(value = CHANGE_PASSWORD_PATH, method = RequestMethod.GET)
+	public String changeUserPasswordGet(@RequestParam("id") long id,
+										@RequestParam("token") String token,
+										Locale locale,
+										ModelMap model) {
+		return CHANGE_PASSWORD_VIEW_NAME;
 	}
 
 }
