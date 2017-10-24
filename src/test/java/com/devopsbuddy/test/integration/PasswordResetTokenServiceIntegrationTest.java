@@ -28,13 +28,13 @@ public class PasswordResetTokenServiceIntegrationTest extends AbstractServiceInt
 	public void testCreateNewTokenForUserEmail() throws Exception {
 
 		User user = createUser(testName);
-		
+
 		PasswordResetToken passwordResetToken = passwordResetTokenService.createPasswordResetTokenForEmail(user.getEmail());
-		
+
 		assertTrue("1) Password reset token is null" , passwordResetToken != null);
-		
+
 		assertTrue("2) Password reset token is null" , passwordResetToken.getToken() != null);
-		
+
 	}
 	
 	@Test

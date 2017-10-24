@@ -19,7 +19,7 @@ import com.devopsbuddy.backend.persistence.repositories.UserRepository;
 @Service
 @Transactional(readOnly=true)
 public class PasswordResetTokenService {
-	
+
 	@Autowired
 	private UserRepository userRepository;
 	
@@ -28,7 +28,7 @@ public class PasswordResetTokenService {
 
 	@Value("${token.expiration.length.minutes}")
 	private int tokenExpirationInMinutes;
-	
+
 	/** The application logger **/
 	private static final Logger LOG = LoggerFactory.getLogger(PasswordResetTokenService.class);
 	

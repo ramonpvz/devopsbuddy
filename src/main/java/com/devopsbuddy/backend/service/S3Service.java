@@ -26,19 +26,19 @@ public class S3Service {
 	private static final Logger LOG = LoggerFactory.getLogger(S3Service.class);
 	
 	private static final String PROFILE_PICTURE_FILE_NAME = "profilePicture";
-	
+
 	@Value("${aws.s3.root.bucket.name}")
 	private String bucketName;
-	
+
 	@Value("${aws.s3.profile}")
 	private String awsProfileName;
-	
+
 	@Value("${image.store.tmp.folder}")
 	private String tempImageStore;
-	
+
 	@Autowired
 	private AmazonS3 s3Client;
-	
+
 	/**
 	 * It stores the given file name in S3 and returns the key under which the file has been stored
 	 * @param uploadedFile The multipart file uploaded by the user
