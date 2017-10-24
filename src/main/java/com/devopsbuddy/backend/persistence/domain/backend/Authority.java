@@ -10,7 +10,7 @@ public class Authority implements GrantedAuthority {
 		this.authority = authority;
 	}
 
-	/** **/
+	/** The Serial Version UID for Serializable classes. **/
 	private static final long serialVersionUID = 1L;
 
 	@Override
