@@ -1,0 +1,6 @@
+#List repos
+aws s3 ls --profile devopsbuddy
+#Upload files
+aws s3 sync . s3://rpineda-devopsbuddy-config
+#Configure profile
+aws configure --profile devopsbuddy
